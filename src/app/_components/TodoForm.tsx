@@ -26,9 +26,7 @@ export default function TodoForm() {
   const router = useRouter();
 
   const onSubmit = async (data: TodoFormData) => {
-    await createTodo(
-      new FormData(document.getElementById('todo-form') as HTMLFormElement)
-    );
+    await createTodo(data);
     router.refresh();
     reset();
   };

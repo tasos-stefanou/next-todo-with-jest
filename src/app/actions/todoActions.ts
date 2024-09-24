@@ -1,39 +1,58 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
-import { z } from 'zod';
+import { PrismaClient, Todo } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const TodoSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().optional(),
-});
+export async function createTodo(data: Partial<Todo>) {
+  const { title, description } = data;
 
-export async function createTodo(formData: FormData) {
-  const { title, description } = TodoSchema.parse({
-    title: formData.get('title'),
-    description: formData.get('description'),
-  });
+  if (!title) {
+    throw new Error('Title is required');
+  }
 
-  return prisma.todo.create({
-    data: { title, description },
-  });
+  try {
+    const newTodo = await prisma.todo.create({
+      data: { title, description },
+    });
+    return newTodo;
+  } catch (error) {
+    console.error('[CREATE_TODO_ERROR]', error);
+    throw error;
+  }
 }
 
 export async function getTodos() {
-  return prisma.todo.findMany();
+  try {
+    const todos = await prisma.todo.findMany();
+    return todos;
+  } catch (error) {
+    console.error('[GET_TODOS_ERROR]', error);
+    throw error;
+  }
 }
 
 export async function updateTodo(id: number, completed: boolean) {
-  return prisma.todo.update({
-    where: { id },
-    data: { completed },
-  });
+  try {
+    const updatedTodo = await prisma.todo.update({
+      where: { id },
+      data: { completed },
+    });
+    return updatedTodo;
+  } catch (error) {
+    console.error('[UPDATE_TODO_ERROR]', error);
+    throw error;
+  }
 }
 
 export async function deleteTodo(id: number) {
-  return prisma.todo.delete({
-    where: { id },
-  });
+  try {
+    const deletedTodo = await prisma.todo.delete({
+      where: { id },
+    });
+    return deletedTodo;
+  } catch (error) {
+    console.error('[DELETE_TODO_ERROR]', error);
+    throw error;
+  }
 }

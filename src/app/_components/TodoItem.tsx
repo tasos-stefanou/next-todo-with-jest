@@ -3,13 +3,7 @@
 import { useState } from 'react';
 import { updateTodo, deleteTodo } from '../actions/todoActions';
 import { useRouter } from 'next/navigation';
-
-type Todo = {
-  id: number;
-  title: string;
-  description: string | null;
-  completed: boolean;
-};
+import { Todo } from '@prisma/client';
 
 export default function TodoItem({ todo }: { todo: Todo }) {
   const router = useRouter();
@@ -23,8 +17,6 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   const handleDelete = async () => {
     await deleteTodo(todo.id);
     router.refresh();
-    // We'll need to implement a way to remove this item from the list
-    // This could be done through client-side state management or by refreshing the entire list
   };
 
   return (

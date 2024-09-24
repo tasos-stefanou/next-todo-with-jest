@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import TodoItem from './TodoItem';
+import { getTodos } from '../actions/todoActions';
 
-const prisma = new PrismaClient();
-
-export default async function TodoList() {
-  const todos = await prisma.todo.findMany();
+const TodoList = async () => {
+  const todos = await getTodos();
 
   return (
     <ul className='space-y-4'>
@@ -13,4 +11,6 @@ export default async function TodoList() {
       ))}
     </ul>
   );
-}
+};
+
+export default TodoList;

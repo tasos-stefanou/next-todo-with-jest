@@ -36,11 +36,12 @@ describe('Todo Actions', () => {
     };
     mockPrismaClient.todo.create.mockResolvedValue(mockTodo);
 
-    const formData = new FormData();
-    formData.append('title', 'Test Todo');
-    formData.append('description', 'Test Description');
+    const todoData = {
+      title: 'Test Todo',
+      description: 'Test Description',
+    };
 
-    const result = await createTodo(formData);
+    const result = await createTodo(todoData);
 
     expect(mockPrismaClient.todo.create).toHaveBeenCalledWith({
       data: { title: 'Test Todo', description: 'Test Description' },
