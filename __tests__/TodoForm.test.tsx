@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { createTodo } from '../src/app/actions/todoActions';
 import TodoForm from '@/app/_components/TodoForm';
 
